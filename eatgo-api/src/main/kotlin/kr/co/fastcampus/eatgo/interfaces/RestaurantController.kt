@@ -10,7 +10,7 @@ class RestaurantController {
     @GetMapping(GET_RESTAURANTS)
     fun list(): List<Restaurant> {
         val restaurants = arrayListOf<Restaurant>()
-        restaurants.add(Restaurant("Bob zip", "Seoul"))
+        restaurants.add(Restaurant(1004, "Bob zip", "Seoul"))
         return restaurants
     }
 

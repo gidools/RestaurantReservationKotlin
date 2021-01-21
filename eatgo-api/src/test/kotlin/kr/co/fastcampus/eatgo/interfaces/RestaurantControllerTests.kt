@@ -24,6 +24,9 @@ class RestaurantControllerTests {
         mvc.perform(get(RestaurantController.GET_RESTAURANTS))
                 .andExpect(status().isOk)
                 .andExpect(content().string(
+                        containsString("\"id\":1004")
+                ))
+                .andExpect(content().string(
                         containsString("\"name\":\"Bob zip\"")
                 ))
     }
