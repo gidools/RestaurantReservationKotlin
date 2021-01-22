@@ -28,7 +28,7 @@ class RestaurantController {
         val name = resource.name
         val address = resource.address
 
-        val restaurant = Restaurant(1234L, name, address)
+        val restaurant = Restaurant(name = name, address = address)
         val created = restaurantService.addRestaurant(restaurant)
 
         val location = URI("/restaurants/${restaurant.id}")

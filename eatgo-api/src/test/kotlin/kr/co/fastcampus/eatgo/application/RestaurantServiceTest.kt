@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import java.util.*
 
 @ExtendWith(SpringExtension::class)
 class RestaurantServiceTest {
@@ -52,7 +53,7 @@ class RestaurantServiceTest {
 
     @Test
     fun addRestaurant() {
-        val restaurant = Restaurant("Bob zip", "Seoul")
+        val restaurant = Restaurant(name = "Bob zip", address =  "Seoul")
         val saved = Restaurant(1234L, "Bob zip", "Seoul")
         given(restaurantRepository.save(restaurant)).willReturn(saved)
 
@@ -78,14 +79,14 @@ class RestaurantServiceTest {
         given(restaurantRepository.findAll()).willReturn(getTestRestaurants())
 
         val restaurant1 = getRestaurant(1004L)
-        given(restaurantRepository.findById(1004L)).willReturn(restaurant1)
+        given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant1))
 
         val restaurant2 = getRestaurant(2020)
-        given(restaurantRepository.findById(2020)).willReturn(restaurant2)
+        given(restaurantRepository.findById(2020)).willReturn(Optional.of(restaurant2))
     }
 
     private fun makeMenuItemRepository() {
-        val menuItems = listOf(MenuItem("Kimchi"))
+        val menuItems = listOf(MenuItem(name = "Kimchi"))
         given(menuItemRepository.findAllByRestaurantId(1004L)).willReturn(menuItems)
     }
 

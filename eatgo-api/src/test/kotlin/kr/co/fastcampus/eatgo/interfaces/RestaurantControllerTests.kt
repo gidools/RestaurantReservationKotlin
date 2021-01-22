@@ -6,9 +6,8 @@ import kr.co.fastcampus.eatgo.domain.Restaurant
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.BDDMockito.given
-import org.mockito.BDDMockito.verify
-import org.mockito.Mockito
+import org.mockito.ArgumentMatchers
+import org.mockito.BDDMockito.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -17,7 +16,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(RestaurantController::class)
@@ -76,17 +76,22 @@ class RestaurantControllerTests {
 
     @Test
     fun create() {
-        val restaurant = Restaurant(1234, "Beryong", "Seoul")
-//        val created = restaurantService.addRestaurant(restaurant)
+        val created = Restaurant(name = "Beryong", address = "Seoul")
+//        mvc.perform(post(RestaurantController.API_RESTAURANTS)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content("{\"name\":\"Beryong\",\"address\":\"Seoul\"}"))
+//                .andExpect(status().isCreated)
+//                .andExpect(header().string("location", "/restaurants/1234"))
+//                .andExpect(content().string("{}"))
 
         mvc.perform(post(RestaurantController.API_RESTAURANTS)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"Beryong\",\"address\":\"Seoul\"}"))
                 .andExpect(status().isCreated)
-                .andExpect(header().string("location", "/restaurants/1234"))
                 .andExpect(content().string("{}"))
 
-        Mockito.verify(restaurantService).addRestaurant(restaurant)
+
+        verify(restaurantService).addRestaurant(created)
     }
 
     private fun getRestaurants(): List<Restaurant> {
@@ -100,7 +105,7 @@ class RestaurantControllerTests {
     private fun getRestaurant(id: Long): Restaurant {
         val restaurants = getRestaurants()
         val restaurant = restaurants.first { it.id == id }
-        restaurant.setMenuItems(listOf(MenuItem("Kimchi")))
+        restaurant.setMenuItems(listOf(MenuItem(name = "Kimchi")))
         return restaurant
     }
 

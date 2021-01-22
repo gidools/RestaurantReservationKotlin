@@ -1,11 +1,20 @@
 package kr.co.fastcampus.eatgo.domain
 
-data class Restaurant(var id: Long, val name: String, val address: String) {
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
 
-    constructor(name: String, address: String) : this(0, name, address)
+@Entity
+data class Restaurant(
+        @Id
+        @GeneratedValue
+        val id: Long? = null,
+        val name: String,
+        val address: String) {
 
     val information = "$name in $address"
 
+    @Transient
     val menuItems = arrayListOf<MenuItem>()
 
     fun setMenuItems(menuItems: List<MenuItem>) {

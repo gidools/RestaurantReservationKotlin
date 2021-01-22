@@ -15,8 +15,8 @@ class RestaurantService(@Autowired
     fun getRestaurant(id: Long): Restaurant {
         val menuItems = menuItemRepository.findAllByRestaurantId(id)
         val restaurant = restaurantRepository.findById(id)
-        restaurant.setMenuItems(menuItems)
-        return restaurant
+        restaurant.get().setMenuItems(menuItems)
+        return restaurant.get()
     }
 
     fun getRestaurants(): List<Restaurant> {
