@@ -1,6 +1,7 @@
 package kr.co.fastcampus.eatgo.interfaces
 
 import kr.co.fastcampus.eatgo.domain.Restaurant
+import kr.co.fastcampus.eatgo.domain.RestaurantRepository
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
@@ -8,20 +9,16 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class RestaurantController {
 
+    private val repository = RestaurantRepository()
+
     @GetMapping(GET_RESTAURANTS)
     fun list(): List<Restaurant> {
-        val restaurants = arrayListOf<Restaurant>()
-        restaurants.add(Restaurant(1004, "Bob zip", "Seoul"))
-        return restaurants
+        return repository.findAll()
     }
 
     @GetMapping("$GET_RESTAURANTS/{id}")
     fun detail(@PathVariable("id") id: Long): Restaurant? {
-        val restaurants = arrayListOf<Restaurant>()
-        restaurants.add(Restaurant(1004L, "Bob zip", "Seoul"))
-        restaurants.add(Restaurant(2020L, "Cyber food", "Seoul"))
-
-        return restaurants.first { it.id == id }
+        return repository.findById(id)
     }
 
     companion object {
