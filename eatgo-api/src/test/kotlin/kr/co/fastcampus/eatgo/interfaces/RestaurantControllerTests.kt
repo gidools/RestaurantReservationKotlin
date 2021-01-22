@@ -31,4 +31,24 @@ class RestaurantControllerTests {
                 ))
     }
 
+    @Test
+    internal fun detail() {
+        mvc.perform(get(RestaurantController.GET_RESTAURANTS + "/1004"))
+                .andExpect(status().isOk)
+                .andExpect(content().string(
+                        containsString("\"id\":1004")
+                ))
+                .andExpect(content().string(
+                        containsString("\"name\":\"Bob zip\"")
+                ))
+
+        mvc.perform(get(RestaurantController.GET_RESTAURANTS + "/2020"))
+                .andExpect(status().isOk)
+                .andExpect(content().string(
+                        containsString("\"id\":2020")
+                ))
+                .andExpect(content().string(
+                        containsString("\"name\":\"Cyber food\"")
+                ))
+    }
 }
