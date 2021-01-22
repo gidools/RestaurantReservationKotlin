@@ -1,11 +1,13 @@
 package kr.co.fastcampus.eatgo.interfaces
 
+import kr.co.fastcampus.eatgo.domain.RestaurantRepository
+import kr.co.fastcampus.eatgo.domain.RestaurantRepositoryImpl
 import org.hamcrest.CoreMatchers.containsString
-import org.json.JSONObject
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -18,6 +20,9 @@ class RestaurantControllerTests {
 
     @Autowired
     private lateinit var mvc: MockMvc
+
+    @SpyBean(RestaurantRepositoryImpl::class)
+    private lateinit var restaurantRepository: RestaurantRepository
 
     @Test
     fun list() {
