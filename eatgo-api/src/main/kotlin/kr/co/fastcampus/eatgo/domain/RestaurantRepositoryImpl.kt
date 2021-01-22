@@ -1,5 +1,8 @@
 package kr.co.fastcampus.eatgo.domain
 
+import org.springframework.stereotype.Component
+
+@Component
 class RestaurantRepository {
 
     private val restaurants = arrayListOf<Restaurant>()
