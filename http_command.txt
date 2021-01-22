@@ -1,0 +1,3 @@
+http GET localhost:8080/restaurants
+
+http POST localhost:8080/restaurants name=Beryong address=Busan

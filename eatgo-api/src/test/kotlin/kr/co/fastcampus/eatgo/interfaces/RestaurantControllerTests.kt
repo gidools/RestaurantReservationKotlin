@@ -7,14 +7,17 @@ import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.BDDMockito.given
+import org.mockito.BDDMockito.verify
+import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.http.MediaType
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(RestaurantController::class)
@@ -31,7 +34,7 @@ class RestaurantControllerTests {
         val restaurants = getRestaurants()
         given(restaurantService.getRestaurants()).willReturn(restaurants)
 
-        mvc.perform(get(RestaurantController.GET_RESTAURANTS))
+        mvc.perform(get(RestaurantController.API_RESTAURANTS))
                 .andExpect(status().isOk)
                 .andExpect(content().string(
                         containsString("\"id\":1004")
@@ -49,7 +52,7 @@ class RestaurantControllerTests {
         val restaurant2 = getRestaurant(2020)
         given(restaurantService.getRestaurant(2020)).willReturn(restaurant2)
 
-        mvc.perform(get(RestaurantController.GET_RESTAURANTS + "/1004"))
+        mvc.perform(get(RestaurantController.API_RESTAURANTS + "/1004"))
                 .andExpect(status().isOk)
                 .andExpect(content().string(
                         containsString("\"id\":1004")
@@ -61,7 +64,7 @@ class RestaurantControllerTests {
                         containsString("Kimchi")
                 ))
 
-        mvc.perform(get(RestaurantController.GET_RESTAURANTS + "/2020"))
+        mvc.perform(get(RestaurantController.API_RESTAURANTS + "/2020"))
                 .andExpect(status().isOk)
                 .andExpect(content().string(
                         containsString("\"id\":2020")
@@ -69,6 +72,21 @@ class RestaurantControllerTests {
                 .andExpect(content().string(
                         containsString("\"name\":\"Cyber food\"")
                 ))
+    }
+
+    @Test
+    fun create() {
+        val restaurant = Restaurant(1234, "Beryong", "Seoul")
+//        val created = restaurantService.addRestaurant(restaurant)
+
+        mvc.perform(post(RestaurantController.API_RESTAURANTS)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"Beryong\",\"address\":\"Seoul\"}"))
+                .andExpect(status().isCreated)
+                .andExpect(header().string("location", "/restaurants/1234"))
+                .andExpect(content().string("{}"))
+
+        Mockito.verify(restaurantService).addRestaurant(restaurant)
     }
 
     private fun getRestaurants(): List<Restaurant> {
