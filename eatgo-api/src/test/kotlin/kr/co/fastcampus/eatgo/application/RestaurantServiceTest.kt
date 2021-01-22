@@ -16,7 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @ExtendWith(SpringExtension::class)
 class RestaurantServiceTest {
 
-    private lateinit var restaurantService: RestaurantService
+    private lateinit var sut: RestaurantService
 
     @Mock
     private lateinit var restaurantRepository: RestaurantRepository
@@ -26,14 +26,14 @@ class RestaurantServiceTest {
 
     @BeforeEach
     fun setup() {
-        restaurantService = RestaurantService(restaurantRepository, menuItemRepository)
+        sut = RestaurantService(restaurantRepository, menuItemRepository)
         makeRestaurantRepository()
         makeMenuItemRepository()
     }
 
     @Test
     fun getRestaurant() {
-        val result = restaurantService.getRestaurant(1004L)
+        val result = sut.getRestaurant(1004L)
 
         assertThat(result.id, `is`(1004L))
 
@@ -44,10 +44,21 @@ class RestaurantServiceTest {
 
     @Test
     fun getRestaurants() {
-        val result = restaurantService.getRestaurants()
+        val result = sut.getRestaurants()
 
         val restaurant = result[0]
         assertThat(restaurant.id, `is`(1004L))
+    }
+
+    @Test
+    fun addRestaurant() {
+        val restaurant = Restaurant("Bob zip", "Seoul")
+        val saved = Restaurant(1234L, "Bob zip", "Seoul")
+        given(restaurantRepository.save(restaurant)).willReturn(saved)
+
+        val created = sut.addRestaurant(restaurant)
+
+        assertThat(created.id, `is`(1234L))
     }
 
     private fun getTestRestaurants(): List<Restaurant> {

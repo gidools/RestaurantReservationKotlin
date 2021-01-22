@@ -20,4 +20,10 @@ class RestaurantRepositoryImpl : RestaurantRepository {
         return restaurants.first { it.id == id }
     }
 
+    override fun save(restaurant: Restaurant): Restaurant {
+        restaurant.id = 1234L
+        restaurants.add(restaurant)
+        return restaurant
+    }
+
 }

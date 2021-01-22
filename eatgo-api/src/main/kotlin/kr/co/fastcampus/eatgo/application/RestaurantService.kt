@@ -23,8 +23,8 @@ class RestaurantService(@Autowired
         return restaurantRepository.findAll()
     }
 
-    fun addRestaurant(restaurant: Restaurant): Restaurant? {
-        return null
+    fun addRestaurant(restaurant: Restaurant): Restaurant {
+        return restaurantRepository.save(restaurant)
     }
 
 }
