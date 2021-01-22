@@ -1,5 +1,7 @@
 package kr.co.fastcampus.eatgo.interfaces
 
+import kr.co.fastcampus.eatgo.domain.MenuItemRepository
+import kr.co.fastcampus.eatgo.domain.MenuItemRepositoryImpl
 import kr.co.fastcampus.eatgo.domain.RestaurantRepository
 import kr.co.fastcampus.eatgo.domain.RestaurantRepositoryImpl
 import org.hamcrest.CoreMatchers.containsString
@@ -20,6 +22,9 @@ class RestaurantControllerTests {
 
     @Autowired
     private lateinit var mvc: MockMvc
+
+    @SpyBean(MenuItemRepositoryImpl::class)
+    private lateinit var menuItemRepository: MenuItemRepository
 
     @SpyBean(RestaurantRepositoryImpl::class)
     private lateinit var restaurantRepository: RestaurantRepository
@@ -45,6 +50,9 @@ class RestaurantControllerTests {
                 ))
                 .andExpect(content().string(
                         containsString("\"name\":\"Bob zip\"")
+                ))
+                .andExpect(content().string(
+                        containsString("Kimchi")
                 ))
 
         mvc.perform(get(RestaurantController.GET_RESTAURANTS + "/2020"))
