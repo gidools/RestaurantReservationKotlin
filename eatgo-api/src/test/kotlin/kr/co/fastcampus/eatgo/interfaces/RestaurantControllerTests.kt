@@ -1,16 +1,15 @@
 package kr.co.fastcampus.eatgo.interfaces
 
 import kr.co.fastcampus.eatgo.application.RestaurantService
-import kr.co.fastcampus.eatgo.domain.MenuItemRepository
-import kr.co.fastcampus.eatgo.domain.MenuItemRepositoryImpl
-import kr.co.fastcampus.eatgo.domain.RestaurantRepository
-import kr.co.fastcampus.eatgo.domain.RestaurantRepositoryImpl
+import kr.co.fastcampus.eatgo.domain.MenuItem
+import kr.co.fastcampus.eatgo.domain.Restaurant
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.BDDMockito.given
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.boot.test.mock.mockito.SpyBean
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -24,17 +23,14 @@ class RestaurantControllerTests {
     @Autowired
     private lateinit var mvc: MockMvc
 
-    @SpyBean(RestaurantService::class)
+    @MockBean
     private lateinit var restaurantService: RestaurantService
-
-    @SpyBean(MenuItemRepositoryImpl::class)
-    private lateinit var menuItemRepository: MenuItemRepository
-
-    @SpyBean(RestaurantRepositoryImpl::class)
-    private lateinit var restaurantRepository: RestaurantRepository
 
     @Test
     fun list() {
+        val restaurants = getRestaurants()
+        given(restaurantService.getRestaurants()).willReturn(restaurants)
+
         mvc.perform(get(RestaurantController.GET_RESTAURANTS))
                 .andExpect(status().isOk)
                 .andExpect(content().string(
@@ -46,7 +42,13 @@ class RestaurantControllerTests {
     }
 
     @Test
-    internal fun detail() {
+    fun detail() {
+        val restaurant1 = getRestaurant(1004L)
+        given(restaurantService.getRestaurant(1004L)).willReturn(restaurant1)
+
+        val restaurant2 = getRestaurant(2020)
+        given(restaurantService.getRestaurant(2020)).willReturn(restaurant2)
+
         mvc.perform(get(RestaurantController.GET_RESTAURANTS + "/1004"))
                 .andExpect(status().isOk)
                 .andExpect(content().string(
@@ -68,4 +70,20 @@ class RestaurantControllerTests {
                         containsString("\"name\":\"Cyber food\"")
                 ))
     }
+
+    private fun getRestaurants(): List<Restaurant> {
+        return listOf(
+                Restaurant(1004, "Bob zip", "Seoul"),
+                Restaurant(2020, "Cyber food", "Seoul"),
+                Restaurant(2021, "Joker house", "Busan")
+        )
+    }
+
+    private fun getRestaurant(id: Long): Restaurant {
+        val restaurants = getRestaurants()
+        val restaurant = restaurants.first { it.id == id }
+        restaurant.setMenuItems(listOf(MenuItem("Kimchi")))
+        return restaurant
+    }
+
 }
