@@ -19,6 +19,7 @@ repositories {
 dependencies {
 	// local test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation( "com.nhaarman:mockito-kotlin-kt1.1:1.5.0")
 
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")

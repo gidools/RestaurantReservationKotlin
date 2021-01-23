@@ -11,6 +11,6 @@ class MenuItem(
         val id: Long? = null,
         val name: String) {
 
-    private var restaurantId: Long? = null
+    var restaurantId: Long? = null
 
 }
