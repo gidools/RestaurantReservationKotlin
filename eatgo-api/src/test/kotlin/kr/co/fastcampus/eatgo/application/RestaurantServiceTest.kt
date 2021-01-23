@@ -1,11 +1,9 @@
 package kr.co.fastcampus.eatgo.application
 
-import kr.co.fastcampus.eatgo.domain.MenuItem
-import kr.co.fastcampus.eatgo.domain.MenuItemRepository
-import kr.co.fastcampus.eatgo.domain.Restaurant
-import kr.co.fastcampus.eatgo.domain.RestaurantRepository
+import kr.co.fastcampus.eatgo.domain.*
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -33,7 +31,7 @@ class RestaurantServiceTest {
     }
 
     @Test
-    fun getRestaurant() {
+    fun getRestaurantWithExisted() {
         val result = sut.getRestaurant(1004L)
 
         assertThat(result.id, `is`(1004L))
@@ -41,6 +39,13 @@ class RestaurantServiceTest {
         val menuItem = result.menuItems[0]
 
         assertThat(menuItem.name, `is`("Kimchi"))
+    }
+
+    @Test
+    fun getRestaurantWithNotExisted() {
+        assertThrows(RestaurantNotFoundException::class.java) {
+            sut.getRestaurant(404L)
+        }
     }
 
     @Test

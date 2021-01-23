@@ -3,6 +3,7 @@ package kr.co.fastcampus.eatgo.interfaces
 import kr.co.fastcampus.eatgo.application.RestaurantService
 import kr.co.fastcampus.eatgo.domain.MenuItem
 import kr.co.fastcampus.eatgo.domain.Restaurant
+import kr.co.fastcampus.eatgo.domain.RestaurantNotFoundException
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -43,7 +44,7 @@ class RestaurantControllerTests {
     }
 
     @Test
-    fun detail() {
+    fun detailWithExisted() {
         val restaurant1 = getRestaurant(1004L)
         given(restaurantService.getRestaurant(1004L)).willReturn(restaurant1)
 
@@ -70,6 +71,15 @@ class RestaurantControllerTests {
                 .andExpect(content().string(
                         containsString("\"name\":\"Cyber food\"")
                 ))
+    }
+
+    @Test
+    fun detailWithNotExisted() {
+        given(restaurantService.getRestaurant(404)).willThrow(RestaurantNotFoundException(404L))
+
+        mvc.perform(get(RestaurantController.API_RESTAURANTS + "/404"))
+                .andExpect(status().isNotFound)
+                .andExpect(content().string("{}"))
     }
 
     @Test
