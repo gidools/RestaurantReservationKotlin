@@ -4,8 +4,10 @@ import kr.co.fastcampus.eatgo.application.RestaurantService
 import kr.co.fastcampus.eatgo.domain.Restaurant
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import java.net.URI
+import javax.validation.Valid
 
 @RestController
 class RestaurantController {
@@ -24,7 +26,7 @@ class RestaurantController {
     }
 
     @PostMapping(API_RESTAURANTS)
-    fun create(@RequestBody resource: Restaurant): ResponseEntity<Any?> {
+    fun create(@Valid @RequestBody resource: Restaurant): ResponseEntity<Any?> {
         val name = resource.name
         val address = resource.address
 
@@ -36,7 +38,7 @@ class RestaurantController {
     }
 
     @PatchMapping("${API_RESTAURANTS}/{id}")
-    fun update(@PathVariable("id") id: Long, @RequestBody resource: Restaurant): String {
+    fun update(@PathVariable("id") id: Long, @Valid @RequestBody resource: Restaurant): String {
         restaurantService.updateRestaurant(id, resource.name, resource.address)
         return "{}"
     }

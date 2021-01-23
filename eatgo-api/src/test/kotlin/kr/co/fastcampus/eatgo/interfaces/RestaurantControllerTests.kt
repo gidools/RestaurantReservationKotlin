@@ -90,6 +90,14 @@ class RestaurantControllerTests {
     }
 
     @Test
+    fun createWithInvalidData() {
+        mvc.perform(post(RestaurantController.API_RESTAURANTS)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"\",\"address\":\"\"}"))
+                .andExpect(status().isBadRequest)
+    }
+
+    @Test
     internal fun update() {
         mvc.perform(patch(RestaurantController.API_RESTAURANTS + "/1004")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -97,6 +105,14 @@ class RestaurantControllerTests {
                 .andExpect(status().isOk)
 
         verify(restaurantService).updateRestaurant(1004L, "Beryong", "Busan")
+    }
+
+    @Test
+    internal fun updateWithInvalidData() {
+        mvc.perform(patch(RestaurantController.API_RESTAURANTS + "/1004")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"\",\"address\":\"\"}"))
+                .andExpect(status().isBadRequest)
     }
 
     private fun getRestaurants(): List<Restaurant> {
