@@ -6,7 +6,6 @@ import kr.co.fastcampus.eatgo.domain.Restaurant
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentMatchers
 import org.mockito.BDDMockito.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -76,7 +75,7 @@ class RestaurantControllerTests {
 
     @Test
     fun create() {
-        val created = Restaurant(name = "Beryong", address = "Seoul")
+        val newRestaurant = Restaurant(name = "Beryong", address = "Seoul")
 //        mvc.perform(post(RestaurantController.API_RESTAURANTS)
 //                .contentType(MediaType.APPLICATION_JSON)
 //                .content("{\"name\":\"Beryong\",\"address\":\"Seoul\"}"))
@@ -91,7 +90,7 @@ class RestaurantControllerTests {
                 .andExpect(content().string("{}"))
 
 
-        verify(restaurantService).addRestaurant(created)
+        verify(restaurantService).addRestaurant(newRestaurant)
     }
 
     private fun getRestaurants(): List<Restaurant> {
