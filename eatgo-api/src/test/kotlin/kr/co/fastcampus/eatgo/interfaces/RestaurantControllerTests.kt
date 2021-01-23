@@ -13,8 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -75,13 +74,10 @@ class RestaurantControllerTests {
 
     @Test
     fun create() {
-        val newRestaurant = Restaurant(name = "Beryong", address = "Seoul")
-//        mvc.perform(post(RestaurantController.API_RESTAURANTS)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content("{\"name\":\"Beryong\",\"address\":\"Seoul\"}"))
-//                .andExpect(status().isCreated)
-//                .andExpect(header().string("location", "/restaurants/1234"))
-//                .andExpect(content().string("{}"))
+        val newRestaurant = Restaurant(
+                name = "Beryong",
+                address = "Seoul"
+        )
 
         mvc.perform(post(RestaurantController.API_RESTAURANTS)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -91,6 +87,16 @@ class RestaurantControllerTests {
 
 
         verify(restaurantService).addRestaurant(newRestaurant)
+    }
+
+    @Test
+    internal fun update() {
+        mvc.perform(patch(RestaurantController.API_RESTAURANTS + "/1004")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"Beryong\",\"address\":\"Busan\"}"))
+                .andExpect(status().isOk)
+
+        verify(restaurantService).updateRestaurant(1004L, "Beryong", "Busan")
     }
 
     private fun getRestaurants(): List<Restaurant> {
@@ -104,7 +110,7 @@ class RestaurantControllerTests {
     private fun getRestaurant(id: Long): Restaurant {
         val restaurants = getRestaurants()
         val restaurant = restaurants.first { it.id == id }
-        restaurant.setMenuItems(listOf(MenuItem(name = "Kimchi")))
+        restaurant.menuItems = listOf(MenuItem(name = "Kimchi"))
         return restaurant
     }
 

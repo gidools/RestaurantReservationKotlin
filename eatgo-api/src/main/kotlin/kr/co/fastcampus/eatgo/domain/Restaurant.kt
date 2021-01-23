@@ -8,18 +8,13 @@ import javax.persistence.Id
 data class Restaurant(
         @Id
         @GeneratedValue
-        val id: Long? = null,
-        val name: String,
-        val address: String) {
+        var id: Long? = null,
+        var name: String,
+        var address: String) {
 
-    val information = "$name in $address"
+    val information get() = "$name in $address"
 
     @Transient
-    val menuItems = arrayListOf<MenuItem>()
-
-    fun setMenuItems(menuItems: List<MenuItem>) {
-        this.menuItems.clear()
-        this.menuItems.addAll(menuItems)
-    }
+    var menuItems: List<MenuItem> = arrayListOf()
 
 }

@@ -35,6 +35,12 @@ class RestaurantController {
         return ResponseEntity.created(location).body("{}")
     }
 
+    @PatchMapping("${API_RESTAURANTS}/{id}")
+    fun update(@PathVariable("id") id: Long, @RequestBody resource: Restaurant): String {
+        restaurantService.updateRestaurant(id, resource.name, resource.address)
+        return "{}"
+    }
+
     companion object {
         const val API_RESTAURANTS = "/restaurants"
     }
