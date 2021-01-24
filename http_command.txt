@@ -1,9 +1,12 @@
-http GET localhost:8080/restaurants
 
+// restaurant
+http GET localhost:8080/restaurants
 http POST localhost:8080/restaurants name="Bop zip" address=Seoul
 http POST localhost:8080/restaurants name=Beryong address=Busan
 http POST localhost:8080/restaurants name=Maru address=Yongin
 
+// menu
+http GET localhost:8080/restaurants/1/menuitems
 http PATCH localhost:8080/restaurants/1/menuitems < menuitems_save.json
 http PATCH localhost:8080/restaurants/1/menuitems < menuitems_update.json
 
