@@ -13,4 +13,8 @@ class ReviewService(@Autowired private val reviewRepository: ReviewRepository) {
         return reviewRepository.save(review)
     }
 
+    fun getReviews(): List<Review> {
+        return reviewRepository.findAll()
+    }
+
 }

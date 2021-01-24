@@ -28,4 +28,8 @@ class MenuItemService(
         menuItemRepository.save(item)
     }
 
+    fun getMenuItems(restaurantId: Long): List<MenuItem> {
+        return menuItemRepository.findAllByRestaurantId(restaurantId)
+    }
+
 }

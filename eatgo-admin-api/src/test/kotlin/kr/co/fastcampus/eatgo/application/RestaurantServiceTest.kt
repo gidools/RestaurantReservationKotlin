@@ -7,10 +7,8 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentMatchers
-import org.mockito.BDDMockito.*
+import org.mockito.BDDMockito.given
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.util.*
 
@@ -21,18 +19,10 @@ class RestaurantServiceTest {
     @Mock
     private lateinit var restaurantRepository: RestaurantRepository
 
-    @Mock
-    private lateinit var menuItemRepository: MenuItemRepository
-
-    @Mock
-    private lateinit var reviewRepository: ReviewRepository
-
     @BeforeEach
     fun setup() {
-        sut = RestaurantService(restaurantRepository, menuItemRepository, reviewRepository)
+        sut = RestaurantService(restaurantRepository)
         makeRestaurantRepository()
-        makeMenuItemRepository()
-        makeReviewRepository()
     }
 
     @Test
@@ -40,13 +30,6 @@ class RestaurantServiceTest {
         val result = sut.getRestaurant(1004L)
 
         assertThat(result.id, `is`(1004L))
-
-        val menuItem = result.menuItems[0]
-
-        assertThat(menuItem.name, `is`("Kimchi"))
-
-        val review = result.reviews[0]
-        assertThat(review.description, `is`("Good"))
     }
 
     @Test
@@ -107,19 +90,6 @@ class RestaurantServiceTest {
 
         val restaurant2 = getRestaurant(2020)
         given(restaurantRepository.findById(2020)).willReturn(Optional.of(restaurant2))
-    }
-
-    private fun makeMenuItemRepository() {
-        val menuItems = listOf(MenuItem(name = "Kimchi"))
-        given(menuItemRepository.findAllByRestaurantId(1004L)).willReturn(menuItems)
-    }
-
-    private fun makeReviewRepository() {
-        val reviews = listOf(
-                Review(name = "Jack", score = 3, description = "Good"),
-                Review(name = "James", score = 1, description = "Bad")
-        )
-        given(reviewRepository.findAllByRestaurantId(1004L)).willReturn(reviews)
     }
 
 }

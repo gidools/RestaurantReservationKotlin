@@ -1,9 +1,12 @@
 package kr.co.fastcampus.eatgo.application
 
 import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.given
 import com.nhaarman.mockito_kotlin.verify
 import kr.co.fastcampus.eatgo.domain.Review
 import kr.co.fastcampus.eatgo.domain.ReviewRepository
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -24,11 +27,14 @@ class ReviewServiceTest {
     }
 
     @Test
-    fun addReview() {
-        val review = Review(name = "Jack", score = 3, description = "Tasty")
+    internal fun getReviews() {
+        val reviews = listOf(Review(name = "Jack", score = 3, description = "Cool!"))
+        given(reviewRepository.findAll()).willReturn(reviews)
 
-        sut.addReview(1L, review)
+        val result = sut.getReviews()
 
-        verify(reviewRepository).save(any())
+        verify(reviewRepository).findAll()
+        assertThat(result[0].description, `is`("Cool!"))
     }
+
 }

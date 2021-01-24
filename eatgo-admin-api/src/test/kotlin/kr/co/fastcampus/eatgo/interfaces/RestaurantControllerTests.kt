@@ -1,7 +1,6 @@
 package kr.co.fastcampus.eatgo.interfaces
 
 import kr.co.fastcampus.eatgo.application.RestaurantService
-import kr.co.fastcampus.eatgo.domain.MenuItem
 import kr.co.fastcampus.eatgo.domain.Restaurant
 import kr.co.fastcampus.eatgo.domain.RestaurantNotFoundException
 import kr.co.fastcampus.eatgo.domain.Review
@@ -49,9 +48,6 @@ class RestaurantControllerTests {
         val restaurant = getRestaurant(1004L)
         given(restaurantService.getRestaurant(1004L)).willReturn(restaurant)
 
-        val review = Review(name = "Jack", score = 5, description = "great")
-        restaurant.reviews = listOf(review)
-
         mvc.perform(get(RestaurantController.API_RESTAURANTS + "/1004"))
                 .andExpect(status().isOk)
                 .andExpect(content().string(
@@ -60,10 +56,6 @@ class RestaurantControllerTests {
                 .andExpect(content().string(
                         containsString("\"name\":\"Bob zip\"")
                 ))
-                .andExpect(content().string(
-                        containsString("Kimchi")
-                ))
-                .andExpect(content().string(containsString("\"description\":\"great\"")))
     }
 
     @Test
@@ -128,9 +120,7 @@ class RestaurantControllerTests {
 
     private fun getRestaurant(id: Long): Restaurant {
         val restaurants = getRestaurants()
-        val restaurant = restaurants.first { it.id == id }
-        restaurant.menuItems = listOf(MenuItem(name = "Kimchi"))
-        return restaurant
+        return restaurants.first { it.id == id }
     }
 
 }
