@@ -31,7 +31,7 @@ class RestaurantController {
         val address = resource.address
 
         val restaurant = Restaurant(name = name, address = address)
-        val created = restaurantService.addRestaurant(restaurant)
+        restaurantService.addRestaurant(restaurant)
 
         val location = URI("/restaurants/${restaurant.id}")
         return ResponseEntity.created(location).body("{}")

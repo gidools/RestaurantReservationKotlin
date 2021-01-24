@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
 	id("org.springframework.boot") version "2.4.2"
@@ -7,10 +8,6 @@ plugins {
 	kotlin("jvm") version "1.4.21"
 	kotlin("plugin.spring") version "1.4.21"
 }
-
-//repositories {
-//	mavenCentral()
-//}
 
 allprojects {
 	repositories {
@@ -30,6 +27,10 @@ allprojects {
 			freeCompilerArgs = listOf("-Xjsr305=strict")
 			jvmTarget = "1.8"
 		}
+	}
+
+	tasks.withType<BootJar> {
+		enabled = false
 	}
 }
 
