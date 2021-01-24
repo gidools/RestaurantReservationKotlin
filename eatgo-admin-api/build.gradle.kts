@@ -1,22 +1,16 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.4.2"
-	id("io.spring.dependency-management") version "1.0.11.RELEASE"
-	id( "org.jetbrains.kotlin.plugin.jpa") version "1.4.30-RC"
-	kotlin("jvm") version "1.4.21"
-	kotlin("plugin.spring") version "1.4.21"
-}
-
-group = "kr.co.fastcampus"
-version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
-
-repositories {
-	mavenCentral()
+	id("io.spring.dependency-management")
+	id("org.springframework.boot")
+	id( "org.jetbrains.kotlin.plugin.jpa")
+	kotlin("jvm")
+	kotlin("plugin.spring")
 }
 
 dependencies {
+	implementation(project(":eatgo-common"))
+
 	// local test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation( "com.nhaarman:mockito-kotlin-kt1.1:1.5.0")
@@ -33,12 +27,5 @@ dependencies {
 }
 
 tasks.withType<KotlinCompile> {
-	kotlinOptions {
-		freeCompilerArgs = listOf("-Xjsr305=strict")
-		jvmTarget = "1.8"
-	}
-}
-
-tasks.withType<Test> {
-	useJUnitPlatform()
+	kotlinOptions.jvmTarget = "1.8"
 }
