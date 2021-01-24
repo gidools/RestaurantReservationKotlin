@@ -13,11 +13,19 @@ class MenuItemService(
 
     fun bulkUpdate(restaurantId: Long, menuItems: List<MenuItem>): String {
         for (item in menuItems) {
-            item.restaurantId = restaurantId
-            menuItemRepository.save(item)
+            update(item, restaurantId)
         }
 
         return ""
+    }
+
+    private fun update(item: MenuItem, restaurantId: Long) {
+        if (item.destroy) {
+            menuItemRepository.deleteById(item.id!!)
+            return
+        }
+        item.restaurantId = restaurantId
+        menuItemRepository.save(item)
     }
 
 }

@@ -1,6 +1,7 @@
 package kr.co.fastcampus.eatgo.application
 
 import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.times
 import kr.co.fastcampus.eatgo.domain.MenuItem
 import kr.co.fastcampus.eatgo.domain.MenuItemRepository
@@ -28,12 +29,14 @@ class MenuItemServiceTest {
     fun bulkUpdate() {
         val menuItems = listOf(
                 MenuItem(name = "Kimchi"),
-                MenuItem(name = "Gukbob")
+                MenuItem(id = 12L, name = "Gukbob"),
+                MenuItem(id = 1004L, destroy = true)
         )
 
         sut.bulkUpdate(1L, menuItems)
 
         verify(menuItemRepository, times(2)).save(any())
+        verify(menuItemRepository, times(1)).deleteById(eq(1004L))
     }
 
 }
