@@ -64,28 +64,6 @@ class RestaurantServiceTest {
         assertThat(restaurant.id, `is`(1004L))
     }
 
-    @Test
-    fun addRestaurant() {
-        val restaurant = Restaurant(name = "Bob zip", address =  "Seoul")
-        val saved = Restaurant(1234L, "Bob zip", "Seoul")
-        given(restaurantRepository.save(restaurant)).willReturn(saved)
-
-        val created = sut.addRestaurant(restaurant)
-
-        assertThat(created.id, `is`(1234L))
-    }
-
-    @Test
-    fun updateRestaurant() {
-        val restaurant = Restaurant(1004L, "Bob zip", "Seoul")
-        given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant))
-
-        sut.updateRestaurant(restaurant.id!!, "Sool zip", "Busan")
-
-        assertThat(restaurant.name, `is`("Sool zip"))
-        assertThat(restaurant.address, `is`("Busan"))
-    }
-
     private fun getTestRestaurants(): List<Restaurant> {
         return listOf(
                 Restaurant(1004, "Bob zip", "Seoul"),

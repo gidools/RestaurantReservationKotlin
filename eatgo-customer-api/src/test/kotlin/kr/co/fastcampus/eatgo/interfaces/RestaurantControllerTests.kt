@@ -75,49 +75,6 @@ class RestaurantControllerTests {
                 .andExpect(content().string("{}"))
     }
 
-    @Test
-    fun createWithValidDaa() {
-        val newRestaurant = Restaurant(
-                name = "Beryong",
-                address = "Seoul"
-        )
-
-        mvc.perform(post(RestaurantController.API_RESTAURANTS)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"Beryong\",\"address\":\"Seoul\"}"))
-                .andExpect(status().isCreated)
-                .andExpect(content().string("{}"))
-
-
-        verify(restaurantService).addRestaurant(newRestaurant)
-    }
-
-    @Test
-    fun createWithInvalidData() {
-        mvc.perform(post(RestaurantController.API_RESTAURANTS)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"\",\"address\":\"\"}"))
-                .andExpect(status().isBadRequest)
-    }
-
-    @Test
-    internal fun update() {
-        mvc.perform(patch(RestaurantController.API_RESTAURANTS + "/1004")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"Beryong\",\"address\":\"Busan\"}"))
-                .andExpect(status().isOk)
-
-        verify(restaurantService).updateRestaurant(1004L, "Beryong", "Busan")
-    }
-
-    @Test
-    internal fun updateWithInvalidData() {
-        mvc.perform(patch(RestaurantController.API_RESTAURANTS + "/1004")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"\",\"address\":\"\"}"))
-                .andExpect(status().isBadRequest)
-    }
-
     private fun getRestaurants(): List<Restaurant> {
         return listOf(
                 Restaurant(1004, "Bob zip", "Seoul"),

@@ -26,16 +26,4 @@ class RestaurantService(@Autowired
         return restaurantRepository.findAll()
     }
 
-    fun addRestaurant(restaurant: Restaurant): Restaurant {
-        return restaurantRepository.save(restaurant)
-    }
-
-    @Transactional
-    fun updateRestaurant(id: Long, name: String, address: String): Restaurant {
-        val restaurant = restaurantRepository.findById(id).orElse(null)
-        restaurant.name = name;
-        restaurant.address = address
-        return restaurant
-    }
-
 }
