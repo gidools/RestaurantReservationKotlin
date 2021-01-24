@@ -7,8 +7,10 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.BDDMockito.given
+import org.mockito.ArgumentMatchers
+import org.mockito.BDDMockito.*
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.util.*
 
@@ -16,18 +18,21 @@ import java.util.*
 class RestaurantServiceTest {
 
     private lateinit var sut: RestaurantService
-
     @Mock
     private lateinit var restaurantRepository: RestaurantRepository
 
     @Mock
     private lateinit var menuItemRepository: MenuItemRepository
 
+    @Mock
+    private lateinit var reviewRepository: ReviewRepository
+
     @BeforeEach
     fun setup() {
-        sut = RestaurantService(restaurantRepository, menuItemRepository)
+        sut = RestaurantService(restaurantRepository, menuItemRepository, reviewRepository)
         makeRestaurantRepository()
         makeMenuItemRepository()
+        makeReviewRepository()
     }
 
     @Test
@@ -39,6 +44,9 @@ class RestaurantServiceTest {
         val menuItem = result.menuItems[0]
 
         assertThat(menuItem.name, `is`("Kimchi"))
+
+        val review = result.reviews[0]
+        assertThat(review.description, `is`("Good"))
     }
 
     @Test
@@ -104,6 +112,14 @@ class RestaurantServiceTest {
     private fun makeMenuItemRepository() {
         val menuItems = listOf(MenuItem(name = "Kimchi"))
         given(menuItemRepository.findAllByRestaurantId(1004L)).willReturn(menuItems)
+    }
+
+    private fun makeReviewRepository() {
+        val reviews = listOf(
+                Review(name = "Jack", score = 3, description = "Good"),
+                Review(name = "James", score = 1, description = "Bad")
+        )
+        given(reviewRepository.findAllByRestaurantId(1004L)).willReturn(reviews)
     }
 
 }

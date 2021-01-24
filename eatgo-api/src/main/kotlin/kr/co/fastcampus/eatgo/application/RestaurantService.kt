@@ -1,9 +1,6 @@
 package kr.co.fastcampus.eatgo.application
 
-import kr.co.fastcampus.eatgo.domain.MenuItemRepository
-import kr.co.fastcampus.eatgo.domain.Restaurant
-import kr.co.fastcampus.eatgo.domain.RestaurantNotFoundException
-import kr.co.fastcampus.eatgo.domain.RestaurantRepository
+import kr.co.fastcampus.eatgo.domain.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
@@ -12,12 +9,16 @@ import javax.transaction.Transactional
 class RestaurantService(@Autowired
                         private var restaurantRepository: RestaurantRepository,
                         @Autowired
-                        val menuItemRepository: MenuItemRepository) {
+                        val menuItemRepository: MenuItemRepository,
+                        @Autowired
+                        val reviewRepository: ReviewRepository) {
 
     fun getRestaurant(id: Long): Restaurant {
-        val restaurant = restaurantRepository.findById(id).orElseThrow { RestaurantNotFoundException(id)  }
+        val restaurant = restaurantRepository.findById(id).orElseThrow { RestaurantNotFoundException(id) }
         val menuItems = menuItemRepository.findAllByRestaurantId(id)
+        val reviews = reviewRepository.findAllByRestaurantId(id)
         restaurant.menuItems = menuItems
+        restaurant.reviews = reviews
         return restaurant
     }
 

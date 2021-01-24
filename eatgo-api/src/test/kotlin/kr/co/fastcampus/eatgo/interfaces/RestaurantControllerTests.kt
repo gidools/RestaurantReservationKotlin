@@ -4,6 +4,7 @@ import kr.co.fastcampus.eatgo.application.RestaurantService
 import kr.co.fastcampus.eatgo.domain.MenuItem
 import kr.co.fastcampus.eatgo.domain.Restaurant
 import kr.co.fastcampus.eatgo.domain.RestaurantNotFoundException
+import kr.co.fastcampus.eatgo.domain.Review
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -45,11 +46,11 @@ class RestaurantControllerTests {
 
     @Test
     fun detailWithExisted() {
-        val restaurant1 = getRestaurant(1004L)
-        given(restaurantService.getRestaurant(1004L)).willReturn(restaurant1)
+        val restaurant = getRestaurant(1004L)
+        given(restaurantService.getRestaurant(1004L)).willReturn(restaurant)
 
-        val restaurant2 = getRestaurant(2020)
-        given(restaurantService.getRestaurant(2020)).willReturn(restaurant2)
+        val review = Review(name = "Jack", score = 5, description = "great")
+        restaurant.reviews = listOf(review)
 
         mvc.perform(get(RestaurantController.API_RESTAURANTS + "/1004"))
                 .andExpect(status().isOk)
@@ -62,15 +63,7 @@ class RestaurantControllerTests {
                 .andExpect(content().string(
                         containsString("Kimchi")
                 ))
-
-        mvc.perform(get(RestaurantController.API_RESTAURANTS + "/2020"))
-                .andExpect(status().isOk)
-                .andExpect(content().string(
-                        containsString("\"id\":2020")
-                ))
-                .andExpect(content().string(
-                        containsString("\"name\":\"Cyber food\"")
-                ))
+                .andExpect(content().string(containsString("\"description\":\"great\"")))
     }
 
     @Test
@@ -83,7 +76,7 @@ class RestaurantControllerTests {
     }
 
     @Test
-    fun create() {
+    fun createWithValidDaa() {
         val newRestaurant = Restaurant(
                 name = "Beryong",
                 address = "Seoul"

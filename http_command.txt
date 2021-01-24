@@ -6,3 +6,5 @@ http POST localhost:8080/restaurants name=Maru address=Yongin
 
 http PATCH localhost:8080/restaurants/1/menuitems < menuitems_save.json
 http PATCH localhost:8080/restaurants/1/menuitems < menuitems_update.json
+
+http POST localhost:8080/restaurants/1/reviews name="Jack" score=5 description="Great!"

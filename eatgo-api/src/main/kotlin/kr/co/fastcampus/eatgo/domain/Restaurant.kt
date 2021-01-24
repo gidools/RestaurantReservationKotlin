@@ -24,4 +24,8 @@ data class Restaurant(
     @JsonInclude(JsonInclude.Include.NON_NULL)
     var menuItems: List<MenuItem> = arrayListOf()
 
+    @Transient
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var reviews: List<Review> = arrayListOf()
+
 }
