@@ -1,5 +1,6 @@
 package kr.co.fastcampus.eatgo.interfaces
 
+import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.given
 import com.nhaarman.mockito_kotlin.verify
 import kr.co.fastcampus.eatgo.application.RegionService
@@ -10,9 +11,11 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.http.MediaType
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -38,8 +41,20 @@ class RegionControllerTest {
     }
 
     @Test
-    internal fun create() {
-        TODO("Not yet implemented")
+    fun create() {
+        createMockRegion()
+
+        mvc.perform(post(RegionController.API_REGIONS)
+                .content("{\"name\":\"Seoul\"}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated)
+                .andExpect(content().string("{}"))
+
+        verify(regionService).addRegion("Seoul")
+    }
+
+    private fun createMockRegion() {
+        given(regionService.addRegion(any())).willReturn(Region(id = 1004L, name = "Seoul"))
     }
 
     private fun getMockRegions() {

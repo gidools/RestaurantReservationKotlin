@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity
-class Region(
+data class Region(
         @Id
         @GeneratedValue
         val id: Long? = null,

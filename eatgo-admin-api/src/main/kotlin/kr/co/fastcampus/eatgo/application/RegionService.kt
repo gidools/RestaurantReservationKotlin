@@ -12,4 +12,8 @@ class RegionService(@Autowired private val regionRepository: RegionRepository) {
         return regionRepository.findAll()
     }
 
+    fun addRegion(name: String): Region {
+        return regionRepository.save(Region(name = name))
+    }
+
 }
