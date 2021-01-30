@@ -17,3 +17,7 @@ http POST localhost:8080/restaurants/1/reviews name="Jack" score=5 description="
 http GET localhost:8080/categories
 http POST localhost:8080/categories name="Korean"
 http POST localhost:8080/categories name="Chinese"
+
+// region
+http GET localhost:8080/regions
+http GET localhost:8080/restaurants?region=서울
