@@ -12,7 +12,6 @@ import org.mockito.BDDMockito.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.http.MediaType
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
@@ -30,11 +29,12 @@ class RestaurantControllerTests {
     private lateinit var restaurantService: RestaurantService
 
     @Test
-    fun list() {
+    fun listWithRegion() {
+        val seoul = "Seoul"
         val restaurants = getRestaurants()
-        given(restaurantService.getRestaurants()).willReturn(restaurants)
+        given(restaurantService.getRestaurants(seoul)).willReturn(restaurants)
 
-        mvc.perform(get(RestaurantController.API_RESTAURANTS))
+        mvc.perform(get(RestaurantController.API_RESTAURANTS + "?region=${seoul}"))
                 .andExpect(status().isOk)
                 .andExpect(content().string(
                         containsString("\"id\":1004")

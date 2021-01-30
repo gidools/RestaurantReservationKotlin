@@ -6,5 +6,6 @@ import java.util.*
 interface RestaurantRepository: CrudRepository<Restaurant, Long> {
     override fun findAll(): List<Restaurant>
     override fun findById(id: Long): Optional<Restaurant>
+    fun findByAddressContaining(region: String): List<Restaurant>
     fun save(restaurant: Restaurant): Restaurant
 }

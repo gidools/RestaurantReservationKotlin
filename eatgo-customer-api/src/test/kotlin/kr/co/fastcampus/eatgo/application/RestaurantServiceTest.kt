@@ -7,10 +7,8 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentMatchers
 import org.mockito.BDDMockito.*
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.util.*
 
@@ -58,10 +56,10 @@ class RestaurantServiceTest {
 
     @Test
     fun getRestaurants() {
-        val result = sut.getRestaurants()
+        val result = sut.getRestaurants(region = "Seoul")
 
         val restaurant = result[0]
-        assertThat(restaurant.id, `is`(1004L))
+        assertThat(restaurant.address, `is`("Seoul"))
     }
 
     private fun getTestRestaurants(): List<Restaurant> {
@@ -85,6 +83,10 @@ class RestaurantServiceTest {
 
         val restaurant2 = getRestaurant(2020)
         given(restaurantRepository.findById(2020)).willReturn(Optional.of(restaurant2))
+
+        given(restaurantRepository.findByAddressContaining("Seoul")).willReturn(listOf(
+                Restaurant(1004, "Bob zip", "Seoul"),
+                Restaurant(2020, "Cyber food", "Seoul")))
     }
 
     private fun makeMenuItemRepository() {
