@@ -1,6 +1,5 @@
 package kr.co.fastcampus.eatgo.application
 
-import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.given
 import com.nhaarman.mockito_kotlin.verify
 import kr.co.fastcampus.eatgo.domain.Review
