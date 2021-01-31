@@ -71,9 +71,9 @@ class RestaurantServiceTest {
 
     private fun getTestRestaurants(): List<Restaurant> {
         return listOf(
-                Restaurant(1004, "Bob zip", "Seoul"),
-                Restaurant(2020, "Cyber food", "Seoul"),
-                Restaurant(2021, "Joker house", "Busan")
+                Restaurant(1004, "Bob zip", "Seoul", categoryId = 1L),
+                Restaurant(2020, "Cyber food", "Seoul", categoryId = 2L),
+                Restaurant(2021, "Joker house", "Busan", categoryId = 3L)
         )
     }
 

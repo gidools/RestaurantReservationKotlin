@@ -12,8 +12,8 @@ class RestaurantController {
     private lateinit var restaurantService: RestaurantService
 
     @GetMapping(API_RESTAURANTS)
-    fun list(@RequestParam("region") region: String): List<Restaurant> {
-        return restaurantService.getRestaurants(region)
+    fun list(@RequestParam("region") region: String, @RequestParam("category") categoryId: Long): List<Restaurant> {
+        return restaurantService.getRestaurants(region, categoryId)
     }
 
     @GetMapping("$API_RESTAURANTS/{id}")

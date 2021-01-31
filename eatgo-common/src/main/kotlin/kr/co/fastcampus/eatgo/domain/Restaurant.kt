@@ -5,6 +5,7 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.validation.constraints.NotEmpty
+import javax.validation.constraints.NotNull
 
 @Entity
 data class Restaurant(
@@ -16,7 +17,9 @@ data class Restaurant(
         var name: String,
 
         @field: NotEmpty
-        var address: String) {
+        var address: String,
+
+        var categoryId: Long? = null) {
 
     val information get() = "$name in $address"
 

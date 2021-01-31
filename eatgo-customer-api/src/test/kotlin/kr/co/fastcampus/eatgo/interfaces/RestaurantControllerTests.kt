@@ -29,12 +29,13 @@ class RestaurantControllerTests {
     private lateinit var restaurantService: RestaurantService
 
     @Test
-    fun listWithRegion() {
+    fun list() {
         val seoul = "Seoul"
+        val categoryId = 1
         val restaurants = getRestaurants()
-        given(restaurantService.getRestaurants(seoul)).willReturn(restaurants)
+        given(restaurantService.getRestaurants(seoul, 1L)).willReturn(restaurants)
 
-        mvc.perform(get(RestaurantController.API_RESTAURANTS + "?region=${seoul}"))
+        mvc.perform(get(RestaurantController.API_RESTAURANTS + "?region=${seoul}&category=${categoryId}"))
                 .andExpect(status().isOk)
                 .andExpect(content().string(
                         containsString("\"id\":1004")
@@ -77,9 +78,9 @@ class RestaurantControllerTests {
 
     private fun getRestaurants(): List<Restaurant> {
         return listOf(
-                Restaurant(1004, "Bob zip", "Seoul"),
-                Restaurant(2020, "Cyber food", "Seoul"),
-                Restaurant(2021, "Joker house", "Busan")
+                Restaurant(1004, "Bob zip", "Seoul", categoryId = 1L),
+                Restaurant(2020, "Cyber food", "Seoul", categoryId = 2L),
+                Restaurant(2021, "Joker house", "Busan", categoryId = 3L)
         )
     }
 

@@ -56,7 +56,7 @@ class RestaurantServiceTest {
 
     @Test
     fun getRestaurants() {
-        val result = sut.getRestaurants(region = "Seoul")
+        val result = sut.getRestaurants(region = "Seoul", categoryId = 1L)
 
         val restaurant = result[0]
         assertThat(restaurant.address, `is`("Seoul"))
@@ -64,9 +64,9 @@ class RestaurantServiceTest {
 
     private fun getTestRestaurants(): List<Restaurant> {
         return listOf(
-                Restaurant(1004, "Bob zip", "Seoul"),
-                Restaurant(2020, "Cyber food", "Seoul"),
-                Restaurant(2021, "Joker house", "Busan")
+                Restaurant(1004, "Bob zip", "Seoul", categoryId = 1L),
+                Restaurant(2020, "Cyber food", "Seoul", categoryId = 2L),
+                Restaurant(2021, "Joker house", "Busan", categoryId = 3L)
         )
     }
 
@@ -84,9 +84,9 @@ class RestaurantServiceTest {
         val restaurant2 = getRestaurant(2020)
         given(restaurantRepository.findById(2020)).willReturn(Optional.of(restaurant2))
 
-        given(restaurantRepository.findByAddressContaining("Seoul")).willReturn(listOf(
-                Restaurant(1004, "Bob zip", "Seoul"),
-                Restaurant(2020, "Cyber food", "Seoul")))
+        given(restaurantRepository.findByAddressContainingAndCategoryId("Seoul", 1L)).willReturn(listOf(
+                Restaurant(1004, "Bob zip", "Seoul", categoryId = 1L),
+                Restaurant(2020, "Cyber food", "Seoul", categoryId = 1L)))
     }
 
     private fun makeMenuItemRepository() {

@@ -21,8 +21,8 @@ class RestaurantService(@Autowired
         return restaurant
     }
 
-    fun getRestaurants(region: String): List<Restaurant> {
-        return restaurantRepository.findByAddressContaining(region)
+    fun getRestaurants(region: String, categoryId: Long): List<Restaurant> {
+        return restaurantRepository.findByAddressContainingAndCategoryId(region, categoryId)
     }
 
 }
