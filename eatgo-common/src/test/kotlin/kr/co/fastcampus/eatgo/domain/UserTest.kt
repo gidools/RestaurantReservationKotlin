@@ -12,5 +12,6 @@ class UserTest {
 
         assertThat(result.name, `is`("test"))
         assertThat(result.isAdmin, `is`(true))
+        assertThat(result.isActive, `is`(true))
     }
 }

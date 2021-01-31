@@ -46,14 +46,14 @@ class UserControllerTest {
         val email = "admin@exampl.com"
         val name = "Administrator"
         val level = 3L
-        given(userService.addUser(email, name, level)).willReturn(User(1L, email, name, level))
+        given(userService.addUser(email, name)).willReturn(User(1L, email, name, level))
 
         mvc.perform(post(UserController.API_USERS)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"email\":\"$email\", \"name\":\"$name\",\"level\":$level}"))
                 .andExpect(status().isCreated)
 
-        verify(userService).addUser(email, name, level)
+        verify(userService).addUser(email, name)
     }
 
     @Test
@@ -71,6 +71,15 @@ class UserControllerTest {
                 .andExpect(status().isOk)
 
         verify(userService).updateUser(id, email, name, level)
+    }
+
+    @Test
+    fun deleteUser() {
+        val id = 1004L
+        mvc.perform(delete(UserController.API_USERS + "/" + id))
+                .andExpect(status().isOk)
+
+        verify(userService).deactivateUser(id)
     }
 
 }

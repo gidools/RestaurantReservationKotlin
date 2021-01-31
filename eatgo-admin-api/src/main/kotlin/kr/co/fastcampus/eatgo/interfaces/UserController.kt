@@ -21,7 +21,7 @@ class UserController {
 
     @PostMapping(API_USERS)
     fun create(@Valid @RequestBody resource: User): ResponseEntity<Any> {
-        val created = userService.addUser(email = resource.email, name = resource.name, level = resource.level)
+        val created = userService.addUser(email = resource.email, name = resource.name)
         val location = URI("/${API_USERS}/${created.id}")
         return ResponseEntity.created(location).body("{}")
     }
@@ -32,7 +32,14 @@ class UserController {
         return "{}"
     }
 
+    @DeleteMapping("${API_USERS}/{id}")
+    fun delete(@PathVariable("id") id: Long): String {
+        userService.deactivateUser(id)
+        return "{}"
+    }
+
     companion object {
         const val API_USERS = "/users"
     }
+
 }

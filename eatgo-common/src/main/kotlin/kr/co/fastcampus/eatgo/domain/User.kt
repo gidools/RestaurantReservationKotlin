@@ -4,7 +4,6 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.validation.constraints.NotEmpty
-import javax.validation.constraints.NotNull
 
 @Entity
 class User(
@@ -18,8 +17,8 @@ class User(
         @NotEmpty
         var name: String,
 
-        @NotNull
         var level: Long = 1L) {
 
-        val isAdmin: Boolean = (level >= 3)
+    fun isAdmin() = (level >= 3)
+    fun isActive() = (level > 0)
 }

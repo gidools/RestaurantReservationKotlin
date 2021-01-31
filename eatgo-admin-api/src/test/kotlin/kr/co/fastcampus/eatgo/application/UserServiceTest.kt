@@ -50,7 +50,7 @@ class UserServiceTest {
 
         given(userRepository.save(any())).willReturn(User(email = email, name = name))
 
-        val result = sut.addUser(email, name, 1L)
+        val result = sut.addUser(email, name)
 
         assertThat(result.email, `is`(email))
         assertThat(result.name, `is`(name))
@@ -70,6 +70,24 @@ class UserServiceTest {
 
         verify(userRepository).findById(id)
         assertThat(result.name, `is`(newName))
-        assertThat(result.isAdmin, `is`(true))
+        assertThat(result.isAdmin(), `is`(true))
+    }
+
+    @Test
+    internal fun deactivateUser() {
+        val id = 1004L
+        val email = "admin@exampl.com"
+        val name = "Administrator"
+        val level = 100L
+        val user = User(id, email, name, level)
+        given(userRepository.findById(id)).willReturn(Optional.of(user))
+
+        val result = sut.deactivateUser(id = id)
+
+        verify(userRepository).findById(id)
+
+        assertThat(result.level, `is`(0L))
+        assertThat(result.name, `is`(name))
+        assertThat(result.isActive(), `is`(false))
     }
 }
