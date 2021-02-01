@@ -7,6 +7,9 @@ spring:
 
 spring.main.allow-bean-definition-overriding: true
 
+jwt:
+  secret: 12345678901234567890123456789012
+
 ---
 
 spring:
