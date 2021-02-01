@@ -33,3 +33,7 @@ http DELETE localhost:8080/users/67
 
 // user - customer
 http POST localhost:8080/users email=test1@example.com name=Tester1 password=testtest
+http POST localhost:8080/users email=test3@example.com name=Tester3 password=testtest
+
+// session
+http POST localhost:8080/session email=test3@example.com password=testtest

@@ -1,8 +1,7 @@
 package kr.co.fastcampus.eatgo.interfaces
 
 import kr.co.fastcampus.eatgo.application.UserService
-import kr.co.fastcampus.eatgo.domain.User
-import kr.co.fastcampus.eatgo.domain.accessToken
+import kr.co.fastcampus.eatgo.utils.JwtUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -16,11 +15,15 @@ class SessionController {
     @Autowired
     private lateinit var userService: UserService
 
+    @Autowired
+    private lateinit var jwtUtl: JwtUtil
+
     @PostMapping(API_SESSION)
     fun create(@RequestBody resource: SessionRequestDto): ResponseEntity<SessionResponseDto> {
         val user = userService.authenticate(resource.email, resource.password)
+        val accessToken = jwtUtl.createToken(user.id!!, user.name)
         val url = "/session"
-        val sessionDto = SessionResponseDto(user.accessToken)
+        val sessionDto = SessionResponseDto(accessToken)
         return ResponseEntity.created(URI(url)).body(sessionDto)
     }
 

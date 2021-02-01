@@ -7,6 +7,7 @@ import kr.co.fastcampus.eatgo.application.EmailNotExistedException
 import kr.co.fastcampus.eatgo.application.PasswordWrongException
 import kr.co.fastcampus.eatgo.application.UserService
 import kr.co.fastcampus.eatgo.domain.User
+import kr.co.fastcampus.eatgo.utils.JwtUtil
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -26,26 +27,31 @@ class SessionControllerTest {
     @MockBean
     private lateinit var userService: UserService
 
+    @MockBean
+    private lateinit var jwtUtil: JwtUtil
+
     @Autowired
     private lateinit var mvc: MockMvc
 
     @Test
     fun createWithValidAttributes() {
+        val id = 1004L
         val email = "tester1@email.com"
         val password = "test"
         val name = "Tester1"
         val userToken = "ACCESSTOKEN"
-        val accessToken = userToken.substring(0, 10)
-        val mockUser = User(email = email, name = name, password = userToken)
+        val mockUser = User(id = id, email = email, name = name, password = userToken)
         given(userService.authenticate(email, password)).willReturn(mockUser)
+        given(jwtUtil.createToken(id, name)).willReturn("header.payload.signature")
 
         mvc.perform(
-            post(SessionController.API_SESSION)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"email\":\"$email\", \"password\":\"$password\"}"))
-            .andExpect(status().isCreated)
-            .andExpect(header().string("location", "/session"))
-            .andExpect(content().string(containsString("{\"accessToken\":\"$accessToken\"}")))
+                post(SessionController.API_SESSION)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"$email\", \"password\":\"$password\"}"))
+                .andExpect(status().isCreated)
+                .andExpect(header().string("location", "/session"))
+                .andExpect(content().string(containsString("{\"accessToken\":\"header.payload.signature\"}")))
+                .andExpect(content().string(containsString(".")))
 
         verify(userService).authenticate(email, password)
     }
@@ -58,10 +64,10 @@ class SessionControllerTest {
         given(userService.authenticate(any(), any())).willThrow(PasswordWrongException())
 
         mvc.perform(
-            post(SessionController.API_SESSION)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"email\":\"$email\", \"password\":\"$password\"}"))
-            .andExpect(status().isBadRequest)
+                post(SessionController.API_SESSION)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"$email\", \"password\":\"$password\"}"))
+                .andExpect(status().isBadRequest)
 
         verify(userService).authenticate(email, password)
     }
@@ -74,10 +80,10 @@ class SessionControllerTest {
         given(userService.authenticate(any(), any())).willThrow(EmailNotExistedException(email))
 
         mvc.perform(
-            post(SessionController.API_SESSION)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"email\":\"$email\", \"password\":\"$password\"}"))
-            .andExpect(status().isBadRequest)
+                post(SessionController.API_SESSION)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"$email\", \"password\":\"$password\"}"))
+                .andExpect(status().isBadRequest)
 
         verify(userService).authenticate(email, password)
     }

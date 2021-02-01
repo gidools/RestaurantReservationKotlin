@@ -15,11 +15,4 @@ class UserTest {
         assertThat(result.isActive, `is`(true))
     }
 
-    @Test
-    internal fun accessToken() {
-        val userToken = "ACCESSTOKEN"
-        val accessToken = userToken.substring(0, 10)
-        val user = User(name = "", email = "", password = userToken)
-        assertThat(user.accessToken, `is`(accessToken))
-    }
 }

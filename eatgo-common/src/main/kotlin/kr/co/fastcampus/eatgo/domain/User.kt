@@ -24,4 +24,3 @@ data class User(
 
 val User.isAdmin get() = (level >= 3)
 val User.isActive get() = (level > 0)
-val User.accessToken get() = password.substring(0, 10)
