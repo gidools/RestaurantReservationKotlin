@@ -7,6 +7,7 @@ interface UserRepository: CrudRepository<User, Long> {
 
     override fun findAll(): List<User>
     override fun findById(id: Long): Optional<User>
+    fun findByEmail(email: String): Optional<User>
     fun save(user: User): User
 
 }

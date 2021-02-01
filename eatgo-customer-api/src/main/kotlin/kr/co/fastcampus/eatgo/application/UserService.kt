@@ -10,6 +10,11 @@ import org.springframework.stereotype.Service
 class UserService(@Autowired private val userRepository: UserRepository) {
 
     fun registerUser(email: String, name: String, password: String): User {
+        val existed = userRepository.findByEmail(email)
+        if (existed.isPresent) {
+            throw DuplicateEmailException(email)
+        }
+
         val pwdEncoder = BCryptPasswordEncoder()
         val encodedPwd = pwdEncoder.encode(password)
         return userRepository.save(User(email = email, name = name, password = encodedPwd))
