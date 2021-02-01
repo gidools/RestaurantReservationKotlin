@@ -30,3 +30,6 @@ http POST localhost:8080/users email=test1@example.com name=Tester1 level=0
 http POST localhost:8080/users email=test2@example.com name=Tester1 level=3
 http PATCH localhost:8080/users/1 email=test1@example.com name=Tester1 level=100
 http DELETE localhost:8080/users/67
+
+// user - customer
+http POST localhost:8080/users email=test1@example.com name=Tester1 password=testtest

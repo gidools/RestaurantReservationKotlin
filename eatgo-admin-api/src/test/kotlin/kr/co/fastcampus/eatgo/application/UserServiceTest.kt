@@ -5,6 +5,8 @@ import com.nhaarman.mockito_kotlin.given
 import com.nhaarman.mockito_kotlin.verify
 import kr.co.fastcampus.eatgo.domain.User
 import kr.co.fastcampus.eatgo.domain.UserRepository
+import kr.co.fastcampus.eatgo.domain.isActive
+import kr.co.fastcampus.eatgo.domain.isAdmin
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.jupiter.api.BeforeEach
@@ -70,7 +72,7 @@ class UserServiceTest {
 
         verify(userRepository).findById(id)
         assertThat(result.name, `is`(newName))
-        assertThat(result.isAdmin(), `is`(true))
+        assertThat(result.isAdmin, `is`(true))
     }
 
     @Test
@@ -88,6 +90,6 @@ class UserServiceTest {
 
         assertThat(result.level, `is`(0L))
         assertThat(result.name, `is`(name))
-        assertThat(result.isActive(), `is`(false))
+        assertThat(result.isActive, `is`(false))
     }
 }

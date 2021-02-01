@@ -1,12 +1,13 @@
 package kr.co.fastcampus.eatgo.domain
 
+import com.sun.org.apache.xpath.internal.operations.Bool
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.validation.constraints.NotEmpty
 
 @Entity
-class User(
+data class User(
         @Id
         @GeneratedValue
         var id: Long? = null,
@@ -17,8 +18,8 @@ class User(
         @NotEmpty
         var name: String,
 
-        var level: Long = 1L) {
+        var level: Long = 1L,
+        var password: String = "")
 
-    fun isAdmin() = (level >= 3)
-    fun isActive() = (level > 0)
-}
+val User.isAdmin get() = (level >= 3)
+val User.isActive get() = (level > 0)
