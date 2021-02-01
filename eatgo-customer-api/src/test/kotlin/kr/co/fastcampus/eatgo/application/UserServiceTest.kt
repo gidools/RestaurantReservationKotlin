@@ -33,7 +33,7 @@ class UserServiceTest {
 
         val result = sut.registerUser(email, name, password)
 
-        verify(userRepository).save(result)
+        verify(userRepository).save(any())
     }
 
 }
