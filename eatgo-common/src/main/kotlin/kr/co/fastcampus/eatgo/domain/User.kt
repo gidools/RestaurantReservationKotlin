@@ -19,7 +19,9 @@ data class User(
         var name: String,
 
         var level: Long = 1L,
-        var password: String = "")
+        var password: String = "") {
+}
 
 val User.isAdmin get() = (level >= 3)
 val User.isActive get() = (level > 0)
+val User.accessToken get() = password.substring(0, 10)

@@ -6,6 +6,7 @@ import com.nhaarman.mockito_kotlin.verify
 import kr.co.fastcampus.eatgo.application.EmailNotExistedException
 import kr.co.fastcampus.eatgo.application.PasswordWrongException
 import kr.co.fastcampus.eatgo.application.UserService
+import kr.co.fastcampus.eatgo.domain.User
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -32,6 +33,11 @@ class SessionControllerTest {
     fun createWithValidAttributes() {
         val email = "tester1@email.com"
         val password = "test"
+        val name = "Tester1"
+        val userToken = "ACCESSTOKEN"
+        val accessToken = userToken.substring(0, 10)
+        val mockUser = User(email = email, name = name, password = userToken)
+        given(userService.authenticate(email, password)).willReturn(mockUser)
 
         mvc.perform(
             post(SessionController.API_SESSION)
@@ -39,7 +45,7 @@ class SessionControllerTest {
                 .content("{\"email\":\"$email\", \"password\":\"$password\"}"))
             .andExpect(status().isCreated)
             .andExpect(header().string("location", "/session"))
-            .andExpect(content().string(containsString("{\"accessToken\":\"ACCESSTOKEN\"}")))
+            .andExpect(content().string(containsString("{\"accessToken\":\"$accessToken\"}")))
 
         verify(userService).authenticate(email, password)
     }
