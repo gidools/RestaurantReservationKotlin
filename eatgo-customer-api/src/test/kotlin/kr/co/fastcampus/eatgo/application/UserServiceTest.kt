@@ -1,6 +1,9 @@
 package kr.co.fastcampus.eatgo.application
 
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.given
+import com.nhaarman.mockito_kotlin.never
+import com.nhaarman.mockito_kotlin.verify
 import kr.co.fastcampus.eatgo.domain.User
 import kr.co.fastcampus.eatgo.domain.UserRepository
 import org.hamcrest.CoreMatchers.instanceOf
@@ -12,9 +15,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import java.lang.RuntimeException
 import java.util.*
-import kotlin.Throws
 
 @ExtendWith(SpringExtension::class)
 class UserServiceTest {

@@ -43,4 +43,5 @@ class UserControllerTest {
 
         verify(userService).registerUser(email, name, password)
     }
+
 }

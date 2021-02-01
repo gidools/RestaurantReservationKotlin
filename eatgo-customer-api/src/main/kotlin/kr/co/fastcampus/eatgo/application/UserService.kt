@@ -20,4 +20,8 @@ class UserService(@Autowired private val userRepository: UserRepository) {
         return userRepository.save(User(email = email, name = name, password = encodedPwd))
     }
 
+    fun authenticate(email: String, password: String): User {
+        return User(name = "", email = "")
+    }
+
 }
