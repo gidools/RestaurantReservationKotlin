@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service
 @Service
 class ReviewService(@Autowired private val reviewRepository: ReviewRepository) {
 
-    fun addReview(restaurantId: Long, review: Review): Review {
+    fun addReview(restaurantId: Long, name: String, score: Int, description: String): Review {
+        val review = Review(name = name, score = score, description = description)
         review.restaurantId = restaurantId
         return reviewRepository.save(review)
     }

@@ -12,7 +12,6 @@ data class Review(
         @GeneratedValue
         var id: Long? = null,
 
-        @field: NotEmpty
         var name: String = "",
 
         @field: NotNull

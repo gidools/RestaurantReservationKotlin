@@ -19,6 +19,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @WebMvcTest(ReviewController::class)
 class ReviewControllerTest {
 
+    private val token =
+        "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5hbWUiOiJKYWNrIn0.8XJ_1fcyE2zpZI162crvilIlaNsRhnQPc90mKok0k48"
+
     @MockBean
     private lateinit var reviewService: ReviewService
 
@@ -27,28 +30,32 @@ class ReviewControllerTest {
 
     @Test
     fun createWithValidAttributes() {
-        val review = Review(id = 1004, name = "Jack", score = 3, description = "good")
-        given(reviewService.addReview(any(), any())).willReturn(review)
+        val restaurantId = 1L
+        val score = 3
+        val name = "Jack"
+        val description = "good"
+        val review = Review(id = 1004, name = name, score = score, description = description)
+        given(reviewService.addReview(any(), any(), any(), any())).willReturn(review)
 
-        mvc.perform(post("/restaurants/1/reviews")
+        mvc.perform(post("/restaurants/$restaurantId/reviews")
+                .header("Authorization", "Bearer $token")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"Jack\", \"score\":3, \"description\":\"good\"}"))
-                .andExpect(status().isCreated)
-                .andExpect(header().string("location", "/restaurants/1/reviews/1004"))
+                .content("{\"score\":3, \"description\":\"good\"}"))
+            .andExpect(status().isCreated)
+            .andExpect(header().string("location", "/restaurants/1/reviews/1004"))
 
-        verify(reviewService).addReview(any(), any())
+        verify(reviewService).addReview(restaurantId, name, score, description)
     }
 
     @Test
     fun createWithInvalidAttributes() {
-        given(reviewService.addReview(any(), any())).willReturn(Review(id = 1004L))
-
-        mvc.perform(post("/restaurants/1/reviews")
+        mvc.perform(
+            post("/restaurants/1/reviews")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"\", \"score\":3, \"description\":\"good\"}"))
-                .andExpect(status().isBadRequest)
+                .content("{}"))
+            .andExpect(status().isBadRequest)
 
-        verify(reviewService, never()).addReview(any(), any())
+        verify(reviewService, never()).addReview(any(), any(), any(), any())
     }
 
 }

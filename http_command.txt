@@ -11,7 +11,8 @@ http PATCH localhost:8080/restaurants/1/menuitems < menuitems_save.json
 http PATCH localhost:8080/restaurants/1/menuitems < menuitems_update.json
 
 // review
-http POST localhost:8080/restaurants/1/reviews name="Jack" score=5 description="Great!"
+http GET localhost:8080/restaurants/1/review
+http POST localhost:8080/restaurants/1/reviews score=5 description="Great!"
 
 // category
 http GET localhost:8080/categories

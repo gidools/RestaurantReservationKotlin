@@ -25,9 +25,7 @@ class ReviewServiceTest {
 
     @Test
     fun addReview() {
-        val review = Review(name = "Jack", score = 3, description = "Tasty")
-
-        sut.addReview(1L, review)
+        sut.addReview(1L, "Jack", 3, "Tasty")
 
         verify(reviewRepository).save(any())
     }
