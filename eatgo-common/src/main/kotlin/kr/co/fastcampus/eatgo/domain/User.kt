@@ -1,6 +1,5 @@
 package kr.co.fastcampus.eatgo.domain
 
-import com.sun.org.apache.xpath.internal.operations.Bool
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
