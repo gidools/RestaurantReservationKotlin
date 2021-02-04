@@ -12,6 +12,7 @@ import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
@@ -54,6 +55,7 @@ class SessionControllerTest {
                 .andExpect(content().string(containsString(".")))
 
         verify(userService).authenticate(email, password)
+        verify(jwtUtil).createToken(any(), any())
     }
 
     @Test
