@@ -12,14 +12,18 @@ class JwtUtil(secret: String) {
 
     private val key: SecretKey = Keys.hmacShaKeyFor(secret.toByteArray())
 
-    fun createToken(userId: Long, name: String): String {
-        val token = Jwts.builder()
+    fun createToken(userId: Long, name: String, restaurantId: Long?): String {
+        var builder = Jwts.builder()
             .claim("userId", userId)
             .claim("name", name)
+
+        if (restaurantId != null) {
+            builder = builder.claim("restaurantId", restaurantId)
+        }
+
+        return builder
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
-
-        return token
     }
 
     fun getClaims(token: String): Claims {

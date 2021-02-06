@@ -38,3 +38,4 @@ http POST localhost:8080/users email=test3@example.com name=Tester3 password=tes
 
 // session
 http POST localhost:8080/session email=test3@example.com password=testtest
+http POST localhost:8080/session email=owner@example.com password=testtest

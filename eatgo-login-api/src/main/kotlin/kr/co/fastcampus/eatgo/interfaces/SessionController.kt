@@ -21,7 +21,7 @@ class SessionController {
     @PostMapping(API_SESSION)
     fun create(@RequestBody resource: SessionRequestDto): ResponseEntity<SessionResponseDto> {
         val user = userService.authenticate(resource.email, resource.password)
-        val accessToken = jwtUtl.createToken(user.id!!, user.name)
+        val accessToken = jwtUtl.createToken(user.id!!, user.name, user.restaurantId)
         val url = API_SESSION
         val sessionDto = SessionResponseDto(accessToken)
         return ResponseEntity.created(URI(url)).body(sessionDto)

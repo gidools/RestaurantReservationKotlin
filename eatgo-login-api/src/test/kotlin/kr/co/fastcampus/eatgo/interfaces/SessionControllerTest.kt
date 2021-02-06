@@ -38,10 +38,10 @@ class SessionControllerTest {
         val email = "tester1@email.com"
         val password = "test"
         val name = "Tester1"
-        val userToken = "ACCESSTOKEN"
-        val mockUser = User(id = id, email = email, name = name, password = userToken)
+        val encodedPwd = "password"
+        val mockUser = User(id = id, email = email, name = name, password = encodedPwd)
         given(userService.authenticate(email, password)).willReturn(mockUser)
-        given(jwtUtil.createToken(id, name)).willReturn("header.payload.signature")
+        given(jwtUtil.createToken(id, name, mockUser.restaurantId)).willReturn("header.payload.signature")
 
         mvc.perform(
                 post(SessionController.API_SESSION)
@@ -52,7 +52,32 @@ class SessionControllerTest {
                 .andExpect(content().string("{\"accessToken\":\"header.payload.signature\"}"))
 
         verify(userService).authenticate(email, password)
-        verify(jwtUtil).createToken(any(), any())
+        verify(jwtUtil).createToken(id, name, mockUser.restaurantId)
+    }
+
+    @Test
+    fun createWithRestaurantOwner() {
+        val id = 1004L
+        val email = "tester1@email.com"
+        val password = "test"
+        val name = "Tester1"
+        val encodedPwd = "password"
+        val mockUser = User(id = id, email = email, name = name, password = encodedPwd)
+        mockUser.restaurantId = 369
+
+        given(userService.authenticate(email, password)).willReturn(mockUser)
+        given(jwtUtil.createToken(id, name, mockUser.restaurantId)).willReturn("header.payload.signature")
+
+        mvc.perform(
+            post(SessionController.API_SESSION)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"$email\", \"password\":\"$password\"}"))
+            .andExpect(status().isCreated)
+            .andExpect(header().string("location", "/session"))
+            .andExpect(content().string("{\"accessToken\":\"header.payload.signature\"}"))
+
+        verify(userService).authenticate(email, password)
+        verify(jwtUtil).createToken(id, name, mockUser.restaurantId)
     }
 
     @Test
