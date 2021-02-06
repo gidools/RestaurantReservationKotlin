@@ -35,33 +35,43 @@ class UserServiceTest {
     }
 
     @Test
-    fun registerUser() {
+    internal fun authenticateWithValidAttributes() {
         val email = "tester1@email.com"
-        val name = "Tester1"
         val password = "test"
-        given(userRepository.save(any())).willReturn(User(email = email, name = name, password = password))
-        given(passwordEncoder.encode(any())).willReturn("testestest")
+        val name = "Tester1"
+        val mockUser = User(email = email, name = name)
+        given(userRepository.findByEmail(email)).willReturn(Optional.of(mockUser))
+        given(passwordEncoder.matches(any(), any())).willReturn(true)
 
-        sut.registerUser(email, name, password)
+        val result = sut.authenticate(email, password)
 
-        verify(userRepository).save(any())
+        assertThat(result.email, `is`(email))
     }
 
     @Test
-    fun registerUserWithDuplicatedEmail() {
-        val email = "tester1@email.com"
-        val name = "Tester1"
+    internal fun authenticateWithNotExistedEmail() {
+        val email = "x@email.com"
         val password = "test"
-        val mockUser = User(email = email, name = name, password = password)
-        given(userRepository.findByEmail(email)).willReturn(Optional.of(mockUser))
+        given(userRepository.findByEmail(email)).willReturn(Optional.empty())
 
         val exception = Assertions.assertThrows(RuntimeException::class.java) {
-            sut.registerUser(email, name, password)
+            sut.authenticate(email, password)
         }
 
-        assertThat(exception, `is`(instanceOf(DuplicateEmailException::class.java)))
+        assertThat(exception, `is`(instanceOf(EmailNotExistedException::class.java)))
+    }
 
-        verify(userRepository, never()).save(any())
+    @Test
+    internal fun authenticateWithWrongPassword() {
+        val email = "tester1@email.com"
+        val password = "x"
+        val name = "Tester1"
+        val mockUser = User(email = email, name = name)
+        given(userRepository.findByEmail(email)).willReturn(Optional.of(mockUser))
+
+        Assertions.assertThrows(PasswordWrongException::class.java) {
+            sut.authenticate(email, password)
+        }
     }
 
 }

@@ -8,11 +8,9 @@ import kr.co.fastcampus.eatgo.application.PasswordWrongException
 import kr.co.fastcampus.eatgo.application.UserService
 import kr.co.fastcampus.eatgo.domain.User
 import kr.co.fastcampus.eatgo.utils.JwtUtil
-import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType

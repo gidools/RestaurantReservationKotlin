@@ -12,7 +12,7 @@ http PATCH localhost:8080/restaurants/1/menuitems < menuitems_update.json
 
 // review
 http GET localhost:8080/restaurants/1/review
-http POST localhost:8080/restaurants/1/reviews score=5 description="Great!"
+http POST localhost:8080/restaurants/1/reviews score=5 description="Great!" "Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjk3LCJuYW1lIjoiVGVzdGVyMyJ9.3TdffLlqqjShuxGQgYNUKzyxod8oZWD76QhL-35v3bc"
 
 // category
 http GET localhost:8080/categories
