@@ -30,7 +30,8 @@ class JwtUtilTest {
         val token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5hbWUiOiJKYWNrIn0.8XJ_1fcyE2zpZI162crvilIlaNsRhnQPc90mKok0k48"
         val result = sut.getClaims(token)
 
-        assertThat(result["name"] as String, `is`("Jack"))
+        assertThat(result["name"], `is`("Jack"))
+        assertThat(result.get("userId", Long::class.javaObjectType), `is`(1004L))
 
         val endIndex = token.lastIndexOf('.')
         val withoutSignature = token.substring(0, endIndex + 1);
