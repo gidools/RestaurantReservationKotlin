@@ -12,7 +12,7 @@ class JwtUtil(secret: String) {
 
     private val key: SecretKey = Keys.hmacShaKeyFor(secret.toByteArray())
 
-    fun createToken(userId: Long, name: String, restaurantId: Long?): String {
+    fun createToken(userId: Long, name: String, restaurantId: Long? = null): String {
         var builder = Jwts.builder()
             .claim("userId", userId)
             .claim("name", name)

@@ -19,7 +19,7 @@ class JwtUtilTest {
 
     @Test
     fun createToken() {
-        val token = sut.createToken(1004L, "Jack",)
+        val token = sut.createToken(1004L, "Jack")
         val split = token.split(".")
 
         assertThat(split.size, `is`(3))
