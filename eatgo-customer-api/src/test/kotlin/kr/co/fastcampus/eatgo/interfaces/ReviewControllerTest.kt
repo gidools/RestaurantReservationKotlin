@@ -40,9 +40,9 @@ class ReviewControllerTest {
         mvc.perform(post("/restaurants/$restaurantId/reviews")
                 .header("Authorization", "Bearer $token")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"score\":3, \"description\":\"good\"}"))
+                .content("{\"score\":$score, \"description\":\"$description\"}"))
             .andExpect(status().isCreated)
-            .andExpect(header().string("location", "/restaurants/1/reviews/1004"))
+            .andExpect(header().string("location", "/restaurants/1/reviews/${review.id}"))
 
         verify(reviewService).addReview(restaurantId, name, score, description)
     }

@@ -50,8 +50,7 @@ class SessionControllerTest {
                         .content("{\"email\":\"$email\", \"password\":\"$password\"}"))
                 .andExpect(status().isCreated)
                 .andExpect(header().string("location", "/session"))
-                .andExpect(content().string(containsString("{\"accessToken\":\"header.payload.signature\"}")))
-                .andExpect(content().string(containsString(".")))
+                .andExpect(content().string("{\"accessToken\":\"header.payload.signature\"}"))
 
         verify(userService).authenticate(email, password)
     }

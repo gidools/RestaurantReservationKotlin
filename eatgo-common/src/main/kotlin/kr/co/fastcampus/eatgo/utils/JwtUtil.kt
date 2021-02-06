@@ -18,6 +18,7 @@ class JwtUtil(secret: String) {
             .claim("name", name)
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
+
         return token
     }
 

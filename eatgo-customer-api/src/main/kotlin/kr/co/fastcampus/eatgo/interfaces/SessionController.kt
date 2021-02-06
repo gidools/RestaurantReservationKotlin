@@ -22,7 +22,7 @@ class SessionController {
     fun create(@RequestBody resource: SessionRequestDto): ResponseEntity<SessionResponseDto> {
         val user = userService.authenticate(resource.email, resource.password)
         val accessToken = jwtUtl.createToken(user.id!!, user.name)
-        val url = "/session"
+        val url = API_SESSION
         val sessionDto = SessionResponseDto(accessToken)
         return ResponseEntity.created(URI(url)).body(sessionDto)
     }
