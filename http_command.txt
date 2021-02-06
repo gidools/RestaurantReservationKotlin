@@ -23,7 +23,7 @@ http POST localhost:8080/categories name="Chinese"
 http GET localhost:8080/regions
 http GET localhost:8080/restaurants?region=서울
 
-http GET "localhost:8080/restaurants?region=부산&category=1"
+http GET "localhost:8080/restaurants?region=서울&category=1"
 
 // user
 http GET localhost:8080/users
