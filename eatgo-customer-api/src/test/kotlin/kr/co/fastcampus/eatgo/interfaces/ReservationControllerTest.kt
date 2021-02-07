@@ -1,7 +1,10 @@
 package kr.co.fastcampus.eatgo.interfaces
 
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.given
 import com.nhaarman.mockito_kotlin.verify
 import kr.co.fastcampus.eatgo.application.ReservationService
+import kr.co.fastcampus.eatgo.domain.Reservation
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,6 +37,18 @@ class ReservationControllerTest {
         val date = "2021-12-24"
         val time = "20:00"
         val partySize = 20
+
+        val mockReservation = Reservation().also {
+            it.restaurantId = restaurantId
+            it.userId = userId
+            it.name = name
+            it.date = date
+            it.time = time
+            it.partySize = partySize
+        }
+
+        given(reservationService.addReservation(any(), any(), any(), any(), any(), any()))
+            .willReturn(mockReservation)
 
         mvc.perform(post("/restaurants/$restaurantId/reservations")
             .header("Authorization", "Bearer $token")

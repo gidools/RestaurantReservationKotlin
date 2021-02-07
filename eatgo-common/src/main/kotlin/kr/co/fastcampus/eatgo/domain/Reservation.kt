@@ -10,6 +10,7 @@ data class Reservation(
     @GeneratedValue
     val id: Long? = null) {
 
+    var restaurantId: Long = 0L
     var userId = 0L
     var name = ""
     var date = ""

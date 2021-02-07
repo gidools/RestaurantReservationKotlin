@@ -31,7 +31,7 @@ class ReservationController {
 
         val result = reservationService.addReservation(restaurantId, userId.toLong(), name, date, time, partySize)
 
-        val url = "/restaurants/$restaurantId/reservations/1"
+        val url = "/restaurants/$restaurantId/reservations/${result.id}"
         return ResponseEntity.created(URI(url)).body("{}")
     }
 
