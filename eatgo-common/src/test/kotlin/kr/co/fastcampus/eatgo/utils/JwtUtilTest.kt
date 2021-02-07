@@ -2,6 +2,7 @@ package kr.co.fastcampus.eatgo.utils
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
+import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.jupiter.api.BeforeEach
@@ -19,9 +20,10 @@ class JwtUtilTest {
 
     @Test
     fun createToken() {
-        val token = sut.createToken(1004L, "Jack")
+        val token = sut.createToken(2020L, "Owner", 1004L)
         val split = token.split(".")
 
+        assertThat(token, containsString("."))
         assertThat(split.size, `is`(3))
     }
 

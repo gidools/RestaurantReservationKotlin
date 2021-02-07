@@ -40,5 +40,9 @@ http POST localhost:8080/users email=test3@example.com name=Tester3 password=tes
 http POST localhost:8080/session email=test3@example.com password=testtest
 http POST localhost:8080/session email=owner@example.com password=testtest
 
-// reservation
+// reservation (customer)
 http POST localhost:8080/restaurants/1/reservations date="2021-12-24" time="23:00" partySize="20" "Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjk3LCJuYW1lIjoiVGVzdGVyMyJ9.3TdffLlqqjShuxGQgYNUKzyxod8oZWD76QhL-35v3bc"
+
+// reservation (owner)
+http GET localhost:8080/reservations "Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjQsIm5hbWUiOiLqsIDqsozso7zsnbgiLCJyZXN0YXVyYW50SWQiOjF9.T0Q91L7PLpY5u9M8lYlyr7v6dDYAnxWybZAvf-MEVTs"
+http localhost:8080/reservations "Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjQsIm5hbWUiOiLqsIDqsozso7zsnbgiLCJyZXN0YXVyYW50SWQiOjF9.T0Q91L7PLpY5u9M8lYlyr7v6dDYAnxWybZAvf-MEVTs"
