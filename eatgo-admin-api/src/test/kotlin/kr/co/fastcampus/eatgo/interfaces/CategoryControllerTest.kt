@@ -16,6 +16,8 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 @ExtendWith(SpringExtension::class)
@@ -32,7 +34,7 @@ class CategoryControllerTest {
     fun list() {
         getMockCategories()
 
-        mvc.perform(MockMvcRequestBuilders.get(CategoryController.API_CATEGORIES))
+        mvc.perform(get(API_CATEGORIES))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andExpect(MockMvcResultMatchers.content().string(CoreMatchers.containsString("Korean")))
 
@@ -43,7 +45,7 @@ class CategoryControllerTest {
     fun create() {
         createMockCategory()
 
-        mvc.perform(MockMvcRequestBuilders.post(CategoryController.API_CATEGORIES)
+        mvc.perform(post(API_CATEGORIES)
                 .content("{\"name\":\"Korean\"}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isCreated)
